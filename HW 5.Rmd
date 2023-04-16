@@ -1,0 +1,52 @@
+---
+title: "HW 5"
+author: "Jamee Taylor"
+date: "2023-04-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+library(mapdata)
+library(maps)
+library(ggplot2)
+library(ggrepel)
+library(cowplot)
+library(socviz)
+us_states <- map_data("state")
+head(us_states)
+california <-subset(us_states, region == "california")
+df = load("G:/.shortcut-targets-by-id/1ehWwunuAo7CE1Vk2JYkUnQMmxh5pph3C/DATA/wind_turbines.rda")
+wind_ca <- wind_turbines[wind_turbines$t_state == "CA", ]
+ca <- us_states("state") %>%
+  filter(region == "california")
+ggplot() +
+  geom_polygon(data = california, aes(x = long, y = lat, group = group), 
+               fill = "lightblue", color = "white") +
+  geom_point(data = wind_ca, aes(x = xlong, y = ylat, fill = t_conf_loc)) +
+  guides(fill = "none")
+knitr::include_graphics("wind_ca_map.png")
+  
+  
